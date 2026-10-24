@@ -32,7 +32,7 @@ PASSWORD=$(sing-box generate rand --hex 16)
 # Write config
 cat > /etc/sing-box/config.json <<EOF
 {
-  "log": { "level": "info" },
+  "log": { "level": "warn" },
   "certificate_providers": [
     {
       "type": "acme",
@@ -54,7 +54,13 @@ cat > /etc/sing-box/config.json <<EOF
         "certificate_provider": "le"
       }
     }
-  ]
+  ],
+  "route": {
+    "rules": [
+      { "action": "resolve" },
+      { "ip_is_private": true, "action": "reject" }
+    ]
+  }
 }
 EOF
 sing-box check -C /etc/sing-box
